@@ -10,8 +10,8 @@
 
 Scene::Scene() : m_camera(nullptr) {
   // basic scene lights
-  m_ambientLight = AmbientLight(glm::vec3(1, 1, 1), 0.05f);
-  m_directionalLight = DirectionalLight(glm::vec3(1, 1, 1), 0.5f,
+  m_ambientLight = AmbientLight(glm::vec3(1, 1, 1), 1.00f);
+  m_directionalLight = DirectionalLight(glm::vec3(1, 1, 1), 0.0f,
                                         glm::normalize(glm::vec3(1, -1, 1)));
 }
 
@@ -24,8 +24,9 @@ void Scene::Init(std::shared_ptr<Camera> camera) {
   // m_camera->SetRotate(glm::quat(0, 0, 0, 1));
 }
 
-void Scene::Update(float dt) { m_camera->HandleInput(dt); }
+void Scene::Update(float dt) {
+  m_camera->HandleInput(dt);
+  if (m_spaceShip) m_spaceShip->Update(dt);
+}
 
 std::shared_ptr<Camera> Scene::GetCamera() { return m_camera; }
-
-void Scene::AddNode(std::shared_ptr<Node> node) { m_nodes.push_back(node); }

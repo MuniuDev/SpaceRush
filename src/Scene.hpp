@@ -25,10 +25,11 @@ class Scene {
 
   std::shared_ptr<Camera> GetCamera();
 
-  void AddNode(std::shared_ptr<Node> node);
-
   std::shared_ptr<Camera> m_camera;
-  std::vector<std::shared_ptr<Node>> m_nodes;
+
+  std::shared_ptr<INode> m_spaceShip;
+  std::vector<std::shared_ptr<INode>> m_asteroids;
+  std::vector<std::shared_ptr<INode>> m_projectiles;
 
   // scene lighting
   AmbientLight m_ambientLight;

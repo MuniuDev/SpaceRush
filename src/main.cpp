@@ -17,12 +17,13 @@ int main() {
   auto scene = std::make_shared<Scene>();
   auto gameMgr = std::make_shared<GameManager>(scene);
   context->Init(scene);
+  gameMgr->Init();
   g_timer.Init();
 
   while (!context->ShouldClose()) {
     g_timer.Tic();
-    gameMgr->Update();
     context->PollEvents();
+    gameMgr->Update();
     context->Draw();
   }
 

@@ -55,7 +55,19 @@ void Renderer::RenderScene() {
   m_shader->BindProgram();
   m_shader->SetUniform("u_mvp", m_scene->GetCamera()->GetMVP());
 
-  for (auto &node : m_scene->m_nodes) {
+  if (m_scene->m_spaceShip) {
+    m_shader->SetUniform("u_transform",
+                         m_scene->m_spaceShip->GetTransformation());
+    m_scene->m_spaceShip->Draw();
+  }
+
+  for (auto &node : m_scene->m_asteroids) {
+    m_shader->SetUniform("u_transform", node->GetTransformation());
+    node->Draw();
+  }
+
+  for (auto &node : m_scene->m_projectiles) {
+    m_shader->SetUniform("u_transform", node->GetTransformation());
     node->Draw();
   }
 

@@ -79,4 +79,5 @@ void main()
 
 	// combine lights for final color
   frag_color = ambient + directional;
+  //frag_color = vec4(0.5,0.5,0.5,1.0);
 }
