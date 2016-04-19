@@ -1,10 +1,7 @@
 #include "game/PhysicsNode.hpp"
 #include "game/PhysicsSimulator.hpp"
 
-static const float kAsteroidMass = 10.0f;
-static const float kRestMass = 1.0f;
-
-static const float kShipXLimit = 5.0f;
+static const float kShipXLimit = 5.3f;
 static const float kShipMoveDamping = 0.3f;
 static const float kShipStopDamping = 0.98f;
 
@@ -22,13 +19,12 @@ PhysicsNode::~PhysicsNode() {
 }
 
 void PhysicsNode::InitPhysics(std::unique_ptr<btCollisionShape> shape,
-                              NodeType nodeType) {
+                              NodeType nodeType, float mass) {
   // Setup physics
   m_shape = std::move(shape);
-  float mass = (nodeType != ASTEROID ? kRestMass : kAsteroidMass);
 
-  btVector3 inertia;
-  m_shape->calculateLocalInertia(mass, inertia);
+  btVector3 inertia(0, 0, 0);
+  if (mass > 0) m_shape->calculateLocalInertia(mass, inertia);
 
   m_motionState =
       std::unique_ptr<btDefaultMotionState>(new btDefaultMotionState(

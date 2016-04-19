@@ -2,7 +2,7 @@
 #include "rendering/MeshFactory.hpp"
 
 static const float kProjectileWidth = 0.05f;
-static const float kProjectileLength = 0.1f;
+static const float kProjectileLength = 0.15f;
 
 Projectile::Projectile(const glm::vec3& pos, const glm::vec3& speed) {
   m_pos = pos;

@@ -4,6 +4,7 @@
 #include <cmath>
 
 static const float kScale = 0.3f;
+static const float kAsteroidMass = 10.0f;
 
 Asteroid::Asteroid(const glm::vec3& pos, const glm::vec3& scale,
                    const glm::vec3& speed, const glm::vec3& rotSpeed) {
@@ -19,9 +20,12 @@ void Asteroid::Init() {
   m_mesh = MeshFactory::GetInstance().LoadMesh("res/Asteroid/", "asteroid.fbx",
                                                true);
 
+  glm::vec3 size = m_scale * kAsteroidMass;
+  float mass = glm::abs(size.x * size.y * size.z);
+
   InitPhysics(std::unique_ptr<btCollisionShape>(
                   new btBoxShape(btVector3(m_scale.x, m_scale.y, m_scale.z))),
-              ASTEROID);
+              ASTEROID, mass);
 }
 
 void Asteroid::Update(float dt) { PhysicsNode::Update(dt); }

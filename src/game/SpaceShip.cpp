@@ -5,7 +5,7 @@
 #include <cmath>
 
 static const float kMoveSpeed = 0.3f;
-static const float kScale = 0.03f;
+static const float kScale = 0.04f;
 
 static const float kWidth = 32.0f;
 static const float kLength = 30.0f;
@@ -14,11 +14,11 @@ static const float kHeight = 10.0f;
 static const float kLerpMult = 0.1f;
 static const float kLerpAngle = M_PI_4;
 
-static const float kCooldownTime = 0.5f;
-static const float kProjectileSpeed = 5.0f;
+static const float kCooldownTime = 0.4f;
+static const float kProjectileSpeed = 8.0f;
 static const glm::vec3 kProjectileSpawnOffset(0.f, 1.f, 0.f);
 
-static const glm::vec3 kStartPos(0, -6, 0);
+static const glm::vec3 kStartPos(0, -5.6, 0);
 
 unsigned int SpaceShip::s_hitCount = 0;
 

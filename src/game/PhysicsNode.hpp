@@ -30,7 +30,7 @@ class PhysicsNode : public INode,
   virtual ~PhysicsNode();
 
   void InitPhysics(std::unique_ptr<btCollisionShape> shape,
-                   NodeType nodeType = ASTEROID);
+                   NodeType nodeType = ASTEROID, float mass = 1.0f);
   void Update(float dt) override;
   void Move(const glm::vec3& dir);
 
