@@ -7,6 +7,7 @@
 */
 
 #include "game/GameManager.hpp"
+#include "common/Input.hpp"
 #include "game/Asteroid.hpp"
 #include "game/PhysicsSimulator.hpp"
 #include "game/SpaceShip.hpp"
@@ -15,22 +16,24 @@ GameManager::GameManager(std::shared_ptr<Scene> scene) : m_scene(scene) {}
 GameManager::~GameManager() {}
 
 void GameManager::Init() {
-  auto debugRenderer = std::make_shared<DebugRenderer>(m_scene->GetCamera());
+  m_debugRenderer = std::make_shared<DebugRenderer>(m_scene->GetCamera());
 
-  auto ship = std::make_shared<SpaceShip>();
+  m_emmiter = std::make_shared<AsteroidEmmiter>(m_scene);
+
+  auto ship = std::make_shared<SpaceShip>(m_scene);
   ship->Init();
   m_scene->m_spaceShip = ship;
 
-  auto asteroid =
-      std::make_shared<Asteroid>(glm::vec3(0, 6, 0), glm::vec3(0, -1, 0));
-  asteroid->Init();
-  m_scene->m_asteroids.push_back(asteroid);
-
-  debugRenderer->setDebugMode(1 | 2);
-  g_physics.SetDebugRenderer(debugRenderer);
+  g_physics.SetDebugRenderer(m_debugRenderer);
 }
 void GameManager::Reset() {}
 void GameManager::Update() {
+  if (g_input.GetKeyState(SDL_SCANCODE_T))
+    m_debugRenderer->setDebugMode(1 | 2);
+  else if (g_input.GetKeyState(SDL_SCANCODE_G))
+    m_debugRenderer->setDebugMode(0);
+
+  m_emmiter->Update(g_timer.GetDeltaTime());
   m_scene->Update(g_timer.GetDeltaTime());
   g_physics.Update(g_timer.GetDeltaTime());
 }

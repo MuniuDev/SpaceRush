@@ -47,8 +47,6 @@ MeshData::MeshEntry::MeshEntry(const std::string &path, aiMesh *mesh,
       if (mesh->mVertices[i].y < miny) miny = mesh->mVertices[i].y;
       if (mesh->mVertices[i].z > maxz) maxz = mesh->mVertices[i].z;
       if (mesh->mVertices[i].z < minz) minz = mesh->mVertices[i].z;
-      LOGD("{} {} {}", vertices[i * 3], vertices[i * 3 + 1],
-           vertices[i * 3 + 2]);
     }
 
     LOGD("Sizes x: {} {}  y: {} {} z: {} {}", maxx, minx, maxy, miny, maxz,

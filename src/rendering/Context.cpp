@@ -30,8 +30,7 @@ Context::Context(float width, float height, std::string name)
   // Create window
   m_window = SDL_CreateWindow(
       name.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-      (int)m_width, (int)m_height,
-      SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+      (int)m_width, (int)m_height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
   if (m_window == nullptr) {
     LOGE("Window could not be created! SDL Error: {}", SDL_GetError());
     std::exit(-1);

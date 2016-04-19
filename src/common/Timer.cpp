@@ -13,6 +13,7 @@
 void Timer::Init() {
   m_lastTicTimePoint = std::chrono::system_clock::now();
   m_lastDeltaTime = std::numeric_limits<float>::max();
+  m_totalTime = 0.0f;
 }
 
 void Timer::Tic() {
@@ -20,8 +21,10 @@ void Timer::Tic() {
   std::chrono::duration<float> deltaTime = tmp - m_lastTicTimePoint;
   m_lastTicTimePoint = tmp;
   m_lastDeltaTime = deltaTime.count();
+  m_totalTime += m_lastDeltaTime;
 }
 
 float Timer::GetDeltaTime() { return m_lastDeltaTime; }
+float Timer::GetTotalTime() { return m_totalTime; }
 
 Timer g_timer;

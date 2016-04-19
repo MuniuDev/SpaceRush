@@ -9,6 +9,7 @@
 #pragma once
 
 #include "Scene.hpp"
+#include "game/AsteroidEmmiter.hpp"
 #include "rendering/DebugRenderer.hpp"
 
 class GameManager {
@@ -22,4 +23,6 @@ class GameManager {
 
  private:
   std::shared_ptr<Scene> m_scene;
+  std::shared_ptr<AsteroidEmmiter> m_emmiter;
+  std::shared_ptr<DebugRenderer> m_debugRenderer;
 };

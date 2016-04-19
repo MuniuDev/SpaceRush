@@ -8,6 +8,7 @@
 
 #include "rendering/Renderer.hpp"
 #include "game/PhysicsSimulator.hpp"
+#include "rendering/Quad.hpp"
 
 #define MAX_POINT_LIGHT 10
 
@@ -25,6 +26,21 @@ Renderer::Renderer() {
   m_shader->RegisterUniform("u_directionalLight.base.color");
   m_shader->RegisterUniform("u_directionalLight.base.intensity");
   m_shader->RegisterUniform("u_directionalLight.direction");
+
+  m_starShader =
+      std::make_shared<ShaderProgram>("res/stars.vsh", "res/stars.fsh");
+  m_starShader->RegisterUniform("u_time");
+  m_starShader->RegisterUniform("u_starRadius");
+  m_starShader->RegisterUniform("u_starColor");
+  m_starShader->RegisterUniform("u_starDensity");
+  m_starShader->RegisterUniform("u_speed");
+  m_starShader->RegisterUniform("u_resolution");
+
+  m_projectileShader = std::make_shared<ShaderProgram>("res/projectile.vsh",
+                                                       "res/projectile.fsh");
+  m_projectileShader->RegisterUniform("u_mvp");
+  m_projectileShader->RegisterUniform("u_transform");
+  m_projectileShader->RegisterUniform("u_color");
 }
 
 Renderer::~Renderer() {}
@@ -44,6 +60,17 @@ void Renderer::InitRenderer(std::shared_ptr<Scene> scene, float, float) {
                        m_scene->m_directionalLight.base.intensity);
   m_shader->SetUniform("u_directionalLight.direction",
                        m_scene->m_directionalLight.direction);
+
+  // Paralax star SSE
+  m_starShader->BindProgram();
+  m_starShader->SetUniform("u_starRadius", 0.8f);
+  m_starShader->SetUniform("u_starColor", glm::vec3(1, 1, 1));
+  m_starShader->SetUniform("u_starDensity", 3.5f);
+  m_starShader->SetUniform("u_speed", 0.5f);
+  m_starShader->SetUniform("u_resolution", glm::vec2(5, 7));
+
+  m_projectileShader->BindProgram();
+  m_projectileShader->SetUniform("u_color", glm::vec3(0, 1, 0));
 }
 
 void Renderer::RenderScene() {
@@ -51,6 +78,13 @@ void Renderer::RenderScene() {
   glDepthMask(GL_TRUE);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glClearColor(0, 0, 0, 0);
+
+  // SSE
+  m_starShader->BindProgram();
+  m_starShader->SetUniform("u_time", g_timer.GetTotalTime());
+  static Quad q;
+  q.Render();
+
   glEnable(GL_DEPTH_TEST);
 
   m_shader->BindProgram();
@@ -67,8 +101,10 @@ void Renderer::RenderScene() {
     node->Draw();
   }
 
+  m_projectileShader->BindProgram();
+  m_projectileShader->SetUniform("u_mvp", m_scene->GetCamera()->GetMVP());
   for (auto &node : m_scene->m_projectiles) {
-    m_shader->SetUniform("u_transform", node->GetTransformation());
+    m_projectileShader->SetUniform("u_transform", node->GetTransformation());
     node->Draw();
   }
 

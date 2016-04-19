@@ -17,10 +17,12 @@ class Timer {
   void Init();
   void Tic();
   float GetDeltaTime();
+  float GetTotalTime();
 
  private:
   std::chrono::time_point<std::chrono::system_clock> m_lastTicTimePoint;
   float m_lastDeltaTime;
+  float m_totalTime;
 };
 
 extern Timer g_timer;

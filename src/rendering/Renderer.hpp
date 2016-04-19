@@ -24,4 +24,6 @@ class Renderer {
  protected:
   std::shared_ptr<Scene> m_scene;
   std::shared_ptr<ShaderProgram> m_shader;
+  std::shared_ptr<ShaderProgram> m_starShader;
+  std::shared_ptr<ShaderProgram> m_projectileShader;
 };

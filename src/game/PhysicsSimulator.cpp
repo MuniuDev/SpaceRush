@@ -25,13 +25,19 @@ void PhysicsSimulator::DebugDraw() {
 }
 
 void PhysicsSimulator::AddRigidBody(btRigidBody* body) {
-  LOGD("Adding rigid body to simulation!");
   m_dynamicsWorld->addRigidBody(body);
 }
 
 void PhysicsSimulator::RemoveRigidBody(btRigidBody* body) {
-  LOGD("Removing rigid body from simulation!");
   m_dynamicsWorld->removeRigidBody(body);
+}
+
+void PhysicsSimulator::AddConstraint(btTypedConstraint* constraint) {
+  m_dynamicsWorld->addConstraint(constraint);
+}
+
+void PhysicsSimulator::RemoveConstraint(btTypedConstraint* constraint) {
+  m_dynamicsWorld->removeConstraint(constraint);
 }
 
 void PhysicsSimulator::SetDebugRenderer(

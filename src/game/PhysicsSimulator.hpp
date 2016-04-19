@@ -10,7 +10,9 @@ class PhysicsSimulator {
   PhysicsSimulator();
 
   void AddRigidBody(btRigidBody* body);
+  void AddConstraint(btTypedConstraint* constraint);
   void RemoveRigidBody(btRigidBody* body);
+  void RemoveConstraint(btTypedConstraint* constraint);
   void Update(float dt);
   void DebugDraw();
   void SetDebugRenderer(std::shared_ptr<DebugRenderer> renderer);

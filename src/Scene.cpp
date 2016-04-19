@@ -10,9 +10,9 @@
 
 Scene::Scene() : m_camera(nullptr) {
   // basic scene lights
-  m_ambientLight = AmbientLight(glm::vec3(1, 1, 1), 1.00f);
-  m_directionalLight = DirectionalLight(glm::vec3(1, 1, 1), 0.0f,
-                                        glm::normalize(glm::vec3(1, -1, 1)));
+  m_ambientLight = AmbientLight(glm::vec3(1, 1, 1), 0.70f);
+  m_directionalLight = DirectionalLight(glm::vec3(1, 1, 1), 2.0f,
+                                        glm::normalize(glm::vec3(1, -1, -1)));
 }
 
 Scene::~Scene() {}
@@ -28,12 +28,20 @@ void Scene::Update(float dt) {
   m_camera->HandleInput(dt);
   if (m_spaceShip) m_spaceShip->Update(dt);
 
-  for (auto &node : m_asteroids) {
-    node->Update(dt);
+  for (int i = 0; i < m_asteroids.size(); ++i) {
+    if (m_asteroids[i]->isDestroyRequested()) {
+      m_asteroids.erase(m_asteroids.begin() + i);
+      --i;
+    } else
+      m_asteroids[i]->Update(dt);
   }
 
-  for (auto &node : m_projectiles) {
-    node->Update(dt);
+  for (int i = 0; i < m_projectiles.size(); ++i) {
+    if (m_projectiles[i]->isDestroyRequested()) {
+      m_projectiles.erase(m_projectiles.begin() + i);
+      --i;
+    } else
+      m_projectiles[i]->Update(dt);
   }
 }
 

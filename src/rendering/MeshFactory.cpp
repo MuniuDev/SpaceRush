@@ -17,7 +17,7 @@ MeshFactory &MeshFactory::GetInstance() {
 std::shared_ptr<MeshData> MeshFactory::LoadMesh(std::string path,
                                                 std::string file) {
   std::string name = path + file;
-  LOGD("Loading mesh: {}", name);
+  // LOGD("Loading mesh: {}", name);
   if (m_meshes.find(name) == m_meshes.end()) {
     LOGD("Assigning mesh memory: {}", name);
     auto meshData = std::make_shared<MeshData>(path, file);
@@ -38,7 +38,7 @@ std::shared_ptr<MeshData> MeshFactory::LoadMesh(std::string path,
 
 void MeshFactory::OnRelease(std::shared_ptr<MeshData> data) {
   std::string name = data->GetName();
-  LOGD("Lowering mesh ref count: {}", name);
+  // LOGD("Lowering mesh ref count: {}", name);
   m_refCount[name] -= 1;
   if (m_refCount[name] == 0) {
     LOGD("Freeing mesh memory: {}", name);
