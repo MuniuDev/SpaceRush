@@ -17,6 +17,9 @@ class SpaceShip : public PhysicsNode {
   void Reset();
   glm::mat4 GetTransformation() const override;
 
+ public:
+  static unsigned int s_hitCount;
+
  private:
   void Shoot();
 

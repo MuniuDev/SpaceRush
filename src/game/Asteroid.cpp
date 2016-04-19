@@ -15,7 +15,8 @@ Asteroid::Asteroid(const glm::vec3& pos, const glm::vec3& scale,
 Asteroid::~Asteroid() { MeshFactory::GetInstance().OnRelease(m_mesh); }
 
 void Asteroid::Init() {
-  m_mesh = MeshFactory::GetInstance().LoadMesh("res/Asteroid/", "asteroid.fbx");
+  m_mesh = MeshFactory::GetInstance().LoadMesh("res/Asteroid/", "asteroid.fbx",
+                                               true);
 
   InitPhysics(std::unique_ptr<btCollisionShape>(
                   new btBoxShape(btVector3(m_scale.x, m_scale.y, m_scale.z))),

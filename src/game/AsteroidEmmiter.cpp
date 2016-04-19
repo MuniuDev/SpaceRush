@@ -1,5 +1,6 @@
 #include "game/AsteroidEmmiter.hpp"
 #include "Common.hpp"
+#include "game/SpaceShip.hpp"
 
 float RandomFloat(float min, float max) {
   float ret = min;
@@ -19,9 +20,18 @@ AsteroidEmmiter::AsteroidEmmiter(std::shared_ptr<Scene> scene)
 }
 AsteroidEmmiter::~AsteroidEmmiter() {}
 
+float GetInterval() {
+  const float cooef = 1.03f;
+  const float cooef2 = 1.5f;
+  float count = SpaceShip::s_hitCount;
+  float ret = (1.0f / std::pow(cooef, count)) * cooef2;
+  return ret > 1.0f ? 1.0f : (ret < 0.07f ? 0.07f : ret);
+}
+
 void AsteroidEmmiter::Update(float dt) {
   m_deltaTime += dt;
-  if (m_deltaTime >= 0.2) {
+  float interval = GetInterval();
+  if (m_deltaTime >= interval) {
     auto asteroid = std::make_shared<Asteroid>(
         glm::vec3(RandomFloat(-6, 6), 10, 0),
         glm::vec3(RandomFloat(0.8, 2), RandomFloat(0.8, 2),
@@ -30,6 +40,6 @@ void AsteroidEmmiter::Update(float dt) {
         glm::vec3(RandomFloat(-1, 1), RandomFloat(-1, 1), RandomFloat(-1, 1)));
     asteroid->Init();
     m_scene->m_asteroids.push_back(asteroid);
-    m_deltaTime -= 0.2;
+    m_deltaTime -= interval;
   }
 }

@@ -1,27 +1,12 @@
 #include "game/PhysicsSimulator.hpp"
 #include "game/PhysicsNode.hpp"
+#include "game/SpaceShip.hpp"
 
 PhysicsSimulator g_physics;
 
 struct ContactSensorCallback : public btCollisionWorld::ContactResultCallback {
   ContactSensorCallback() : btCollisionWorld::ContactResultCallback() {}
 
-  //! If you don't want to consider collisions where the bodies are joined by a
-  //! constraint, override needsCollision:
-  /*! However, if you use a btCollisionObject for #body instead of a
-   * btRigidBody,
-   *  then this is unnecessary—checkCollideWithOverride isn't available */
-  /*virtual bool needsCollision(btBroadphaseProxy* proxy) const {
-    // superclass will check m_collisionFilterGroup and m_collisionFilterMask
-    if (!btCollisionWorld::ContactResultCallback::needsCollision(proxy))
-      return false;
-    // if passed filters, may also want to avoid contacts between constraints
-    return body.checkCollideWithOverride(
-        static_cast<btCollisionObject*>(proxy->m_clientObject));
-  }*/
-
-  //! Called with each contact for your own processing (e.g. test if contacts
-  //! fall in within sensor parameters)
   virtual btScalar addSingleResult(btManifoldPoint& cp,
                                    const btCollisionObjectWrapper* colObj0,
                                    int partId0, int index0,
@@ -36,7 +21,10 @@ struct ContactSensorCallback : public btCollisionWorld::ContactResultCallback {
     if (r0->GetType() == PLAYER && r1->GetType() == ASTEROID ||
         r1->GetType() == PLAYER && r0->GetType() == ASTEROID) {
       // Player asteroid contact
-      if (r1->GetType() == PLAYER) std::swap(r0, r1);  // make sure player is r0
+      if (r1->GetType() == PLAYER) {
+        std::swap(r0, r1);
+        LOGD("lol");
+      }  // make sure player is r0
       auto node = r0->GetOwner();
       if (node) {
         node->Destroy();
@@ -45,8 +33,10 @@ struct ContactSensorCallback : public btCollisionWorld::ContactResultCallback {
     if (r0->GetType() == PROJECTILE && r1->GetType() == ASTEROID ||
         r1->GetType() == PROJECTILE && r0->GetType() == ASTEROID) {
       // Projectile asteroid contact
-      if (r1->GetType() == PROJECTILE)
-        std::swap(r0, r1);  // make sure projectile is r0
+      if (r1->GetType() == PROJECTILE) {
+        std::swap(r0, r1);
+        LOGD("lol2");
+      }  // make sure projectile is r0
       auto node0 = r0->GetOwner();
       auto node1 = r1->GetOwner();
       if (node0) {
@@ -55,6 +45,7 @@ struct ContactSensorCallback : public btCollisionWorld::ContactResultCallback {
       if (node1) {
         node1->Destroy();
       }
+      SpaceShip::s_hitCount += 1;
     }
 
     // do stuff with the collision point

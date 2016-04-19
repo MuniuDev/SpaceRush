@@ -11,8 +11,8 @@ Projectile::Projectile(const glm::vec3& pos, const glm::vec3& speed) {
 Projectile::~Projectile() { MeshFactory::GetInstance().OnRelease(m_mesh); }
 
 void Projectile::Init() {
-  m_mesh =
-      MeshFactory::GetInstance().LoadMesh("res/Projectile/", "projectile.fbx");
+  m_mesh = MeshFactory::GetInstance().LoadMesh("res/Projectile/",
+                                               "projectile.fbx", true);
 
   InitPhysics(std::unique_ptr<btCollisionShape>(
                   new btBoxShape(btVector3(m_scale.x, m_scale.y, m_scale.z))),

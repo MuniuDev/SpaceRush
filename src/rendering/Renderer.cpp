@@ -66,7 +66,7 @@ void Renderer::InitRenderer(std::shared_ptr<Scene> scene, float, float) {
   m_starShader->SetUniform("u_starRadius", 0.8f);
   m_starShader->SetUniform("u_starColor", glm::vec3(1, 1, 1));
   m_starShader->SetUniform("u_starDensity", 3.5f);
-  m_starShader->SetUniform("u_speed", 0.5f);
+  m_starShader->SetUniform("u_speed", 1.5f);
   m_starShader->SetUniform("u_resolution", glm::vec2(5, 7));
 
   m_projectileShader->BindProgram();

@@ -15,7 +15,7 @@ MeshFactory &MeshFactory::GetInstance() {
 }
 
 std::shared_ptr<MeshData> MeshFactory::LoadMesh(std::string path,
-                                                std::string file) {
+                                                std::string file, bool retain) {
   std::string name = path + file;
   // LOGD("Loading mesh: {}", name);
   if (m_meshes.find(name) == m_meshes.end()) {
@@ -23,7 +23,7 @@ std::shared_ptr<MeshData> MeshFactory::LoadMesh(std::string path,
     auto meshData = std::make_shared<MeshData>(path, file);
     if (meshData->Init()) {
       m_meshes[name] = meshData;
-      m_refCount[name] = 1;
+      m_refCount[name] = (retain ? 2 : 1);
       return meshData;
     } else {
       LOGE("Failed to load mesh: {}", name);

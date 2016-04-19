@@ -18,7 +18,8 @@ class MeshFactory {
  public:
   static MeshFactory &GetInstance();
 
-  std::shared_ptr<MeshData> LoadMesh(std::string path, std::string file);
+  std::shared_ptr<MeshData> LoadMesh(std::string path, std::string file,
+                                     bool retain = false);
   void OnRelease(std::shared_ptr<MeshData> data);
 
  private:
