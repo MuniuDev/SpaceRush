@@ -12,7 +12,7 @@ class PhysicsNode;
 class OwnedRigidBody : public btRigidBody {
  public:
   OwnedRigidBody(std::shared_ptr<PhysicsNode> owner, NodeType type,
-                 btRigidBody::btRigidBodyConstructionInfo info)
+                 const btRigidBody::btRigidBodyConstructionInfo& info)
       : btRigidBody(info), m_type(type), m_owner(owner) {}
   std::shared_ptr<PhysicsNode> GetOwner() const { return m_owner.lock(); }
   NodeType GetType() const { return m_type; }

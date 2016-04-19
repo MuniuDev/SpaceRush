@@ -44,13 +44,14 @@ endif()
 # Windows workarounds
 if( WIN32 )
   # location of master lib folder
-  set( WIN_LIB_DIR "${CMAKE_SOURCE_DIR}/libs/windows" )
+  set( WIN_LIB_DIR "C:/libs" )
   # lib locations
   set( CMAKE_PREFIX_PATH "${WIN_LIB_DIR}/glew")
   set( GLM_ROOT_DIR "${WIN_LIB_DIR}/glm")
   set( ENV{SDL2DIR} "${WIN_LIB_DIR}/SDL2")
   set( ASSIMP_ROOT_DIR "${WIN_LIB_DIR}/assimp")
   set( SOIL_ROOT_DIR "${WIN_LIB_DIR}/soil")
+  set( BULLET_ROOT  "${WIN_LIB_DIR}/bullet")
   # libraries needed when linking SDL2 statically
   set( LIBRARIES "version.lib;imm32.lib;winmm.lib;")
 endif( WIN32 )
