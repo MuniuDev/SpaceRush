@@ -9,6 +9,7 @@
 #pragma once
 
 #include "Scene.hpp"
+#include "rendering/DebugRenderer.hpp"
 
 class GameManager {
  public:

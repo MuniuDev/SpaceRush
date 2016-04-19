@@ -13,7 +13,7 @@
 int main() {
   srand((unsigned int)time(NULL));
 
-  auto context = std::make_shared<Context>(500, 800, "SpaceRush");
+  auto context = std::make_shared<Context>(600, 800, "SpaceRush");
   auto scene = std::make_shared<Scene>();
   auto gameMgr = std::make_shared<GameManager>(scene);
   context->Init(scene);

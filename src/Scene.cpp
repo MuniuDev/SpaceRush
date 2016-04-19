@@ -27,6 +27,14 @@ void Scene::Init(std::shared_ptr<Camera> camera) {
 void Scene::Update(float dt) {
   m_camera->HandleInput(dt);
   if (m_spaceShip) m_spaceShip->Update(dt);
+
+  for (auto &node : m_asteroids) {
+    node->Update(dt);
+  }
+
+  for (auto &node : m_projectiles) {
+    node->Update(dt);
+  }
 }
 
 std::shared_ptr<Camera> Scene::GetCamera() { return m_camera; }

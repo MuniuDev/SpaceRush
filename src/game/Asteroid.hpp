@@ -1,14 +1,15 @@
 #pragma once
 
 #include "Common.hpp"
-#include "INode.hpp"
 #include "game/PhysicsNode.hpp"
 #include "rendering/MeshFactory.hpp"
 
-class SpaceShip : public PhysicsNode {
+#include <btBulletDynamicsCommon.h>
+
+class Asteroid : public PhysicsNode {
  public:
-  SpaceShip();
-  ~SpaceShip();
+  Asteroid(const glm::vec3& pos, const glm::vec3& speed);
+  ~Asteroid();
 
   void Init() override;
   void Update(float dt) override;
@@ -19,5 +20,4 @@ class SpaceShip : public PhysicsNode {
   std::shared_ptr<MeshData> m_mesh;
 
   glm::vec3 m_scale;
-  glm::quat m_meshRot;
 };

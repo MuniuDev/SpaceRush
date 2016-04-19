@@ -7,6 +7,7 @@
 */
 
 #include "rendering/Renderer.hpp"
+#include "game/PhysicsSimulator.hpp"
 
 #define MAX_POINT_LIGHT 10
 
@@ -70,6 +71,8 @@ void Renderer::RenderScene() {
     m_shader->SetUniform("u_transform", node->GetTransformation());
     node->Draw();
   }
+
+  g_physics.DebugDraw();
 
   // unbind shader
   glUseProgram(0);

@@ -54,7 +54,7 @@ Context::Context(float width, float height, std::string name)
   CHECK_GL_ERR();
 
   // Use Vsync
-  if (SDL_GL_SetSwapInterval(0) < 0) {
+  if (SDL_GL_SetSwapInterval(1) < 0) {
     LOGW("Unable to set VSync! SDL Error: {}", SDL_GetError());
   }
   CHECK_GL_ERR();

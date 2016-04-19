@@ -32,13 +32,27 @@ MeshData::MeshEntry::MeshEntry(const std::string &path, aiMesh *mesh,
 
   vertexCount = mesh->mNumFaces * 3;
 
+  float maxy = 0, maxx = 0, maxz = 0;
+  float miny = 0, minx = 0, minz = 0;
+
   if (mesh->HasPositions()) {
     auto vertices = std::vector<float>(mesh->mNumVertices * 3, 0);
     for (unsigned int i = 0; i < mesh->mNumVertices; ++i) {
       vertices[i * 3] = mesh->mVertices[i].x;
       vertices[i * 3 + 1] = mesh->mVertices[i].y;
       vertices[i * 3 + 2] = mesh->mVertices[i].z;
+      if (mesh->mVertices[i].x > maxx) maxx = mesh->mVertices[i].x;
+      if (mesh->mVertices[i].y > maxy) maxy = mesh->mVertices[i].y;
+      if (mesh->mVertices[i].x < minx) minx = mesh->mVertices[i].x;
+      if (mesh->mVertices[i].y < miny) miny = mesh->mVertices[i].y;
+      if (mesh->mVertices[i].z > maxz) maxz = mesh->mVertices[i].z;
+      if (mesh->mVertices[i].z < minz) minz = mesh->mVertices[i].z;
+      LOGD("{} {} {}", vertices[i * 3], vertices[i * 3 + 1],
+           vertices[i * 3 + 2]);
     }
+
+    LOGD("Sizes x: {} {}  y: {} {} z: {} {}", maxx, minx, maxy, miny, maxz,
+         minz);
 
     glGenBuffers(1, &vbo[VERTEX_BUFFER]);
     glBindBuffer(GL_ARRAY_BUFFER, vbo[VERTEX_BUFFER]);
