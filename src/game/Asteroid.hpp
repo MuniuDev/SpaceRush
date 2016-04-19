@@ -2,9 +2,7 @@
 
 #include "Common.hpp"
 #include "game/PhysicsNode.hpp"
-#include "rendering/MeshFactory.hpp"
-
-#include <btBulletDynamicsCommon.h>
+#include "rendering/MeshData.hpp"
 
 class Asteroid : public PhysicsNode {
  public:

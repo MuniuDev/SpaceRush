@@ -16,7 +16,7 @@
 #include <string>
 #include <vector>
 
-static const int MIPMAP_AMOUNT = 4;
+static const int kMipMapSize = 4;
 
 GLuint create_texture(char const *Filename);
 
@@ -32,25 +32,13 @@ MeshData::MeshEntry::MeshEntry(const std::string &path, aiMesh *mesh,
 
   vertexCount = mesh->mNumFaces * 3;
 
-  float maxy = 0, maxx = 0, maxz = 0;
-  float miny = 0, minx = 0, minz = 0;
-
   if (mesh->HasPositions()) {
     auto vertices = std::vector<float>(mesh->mNumVertices * 3, 0);
     for (unsigned int i = 0; i < mesh->mNumVertices; ++i) {
       vertices[i * 3] = mesh->mVertices[i].x;
       vertices[i * 3 + 1] = mesh->mVertices[i].y;
       vertices[i * 3 + 2] = mesh->mVertices[i].z;
-      if (mesh->mVertices[i].x > maxx) maxx = mesh->mVertices[i].x;
-      if (mesh->mVertices[i].y > maxy) maxy = mesh->mVertices[i].y;
-      if (mesh->mVertices[i].x < minx) minx = mesh->mVertices[i].x;
-      if (mesh->mVertices[i].y < miny) miny = mesh->mVertices[i].y;
-      if (mesh->mVertices[i].z > maxz) maxz = mesh->mVertices[i].z;
-      if (mesh->mVertices[i].z < minz) minz = mesh->mVertices[i].z;
     }
-
-    LOGD("Sizes x: {} {}  y: {} {} z: {} {}", maxx, minx, maxy, miny, maxz,
-         minz);
 
     glGenBuffers(1, &vbo[VERTEX_BUFFER]);
     glBindBuffer(GL_ARRAY_BUFFER, vbo[VERTEX_BUFFER]);
@@ -216,7 +204,7 @@ GLuint create_texture(char const *Filename) {
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
                   GL_LINEAR_MIPMAP_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, MIPMAP_AMOUNT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, kMipMapSize);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,

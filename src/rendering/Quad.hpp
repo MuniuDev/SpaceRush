@@ -1,9 +1,9 @@
 /*
-* Copyright by Michal Majczak & Krzysztof Taperek, 2016
+* Copyright by Michal Majczak, 2016
 * Licensed under the MIT license:
 * http://www.opensource.org/licenses/mit-license.php
 *
-* Author: Krzysztof Taperek <krzysztoftaperek@gmail.com>
+* Author: Michal Majczak <michal.majczak92@gmail.com>
 */
 
 #pragma once
@@ -20,7 +20,6 @@ class Quad {
 
     GLfloat vertices[] = {
         1.0f,  1.0f,  0.0f, -1.0f, 1.0f,  0.0f, 1.0f,  -1.0f, 0.0f,
-
         -1.0f, -1.0f, 0.0f, 1.0f,  -1.0f, 0.0f, -1.0f, 1.0f,  0.0f,
     };
 

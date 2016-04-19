@@ -10,12 +10,11 @@
 #include "game/PhysicsSimulator.hpp"
 #include "rendering/Quad.hpp"
 
-#define MAX_POINT_LIGHT 10
-
 Renderer::Renderer() {
   LOGD("Created renderer");
 
-  m_shader = std::make_shared<ShaderProgram>("res/basic.vsh", "res/basic.fsh");
+  m_shader =
+      std::make_shared<ShaderProgram>("res/diffuse.vsh", "res/diffuse.fsh");
 
   m_shader->RegisterUniform("u_mvp");
   m_shader->RegisterUniform("u_transform");
@@ -108,7 +107,9 @@ void Renderer::RenderScene() {
     node->Draw();
   }
 
+#ifdef GAME_DEBUG
   g_physics.DebugDraw();
+#endif
 
   // unbind shader
   glUseProgram(0);

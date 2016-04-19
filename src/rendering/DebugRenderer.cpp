@@ -61,7 +61,9 @@ void DebugRenderer::drawLine(const btVector3& from, const btVector3& to,
 }
 
 void DebugRenderer::drawSphere(const btVector3& p, btScalar radius,
-                               const btVector3& color) {}
+                               const btVector3& color) {
+  // TODO implement
+}
 
 void DebugRenderer::drawTriangle(const btVector3& a, const btVector3& b,
                                  const btVector3& c, const btVector3& color,
@@ -74,14 +76,18 @@ void DebugRenderer::drawTriangle(const btVector3& a, const btVector3& b,
 void DebugRenderer::drawContactPoint(const btVector3& PointOnB,
                                      const btVector3& normalOnB,
                                      btScalar distance, int lifeTime,
-                                     const btVector3& color) {}
+                                     const btVector3& color) {
+  // TODO implement
+}
 
 void DebugRenderer::reportErrorWarning(const char* warningString) {
   LOGE("{}", warningString);
 }
 
 void DebugRenderer::draw3dText(const btVector3& location,
-                               const char* textString) {}
+                               const char* textString) {
+  // TODO implement
+}
 
 void DebugRenderer::Draw() {
   // init

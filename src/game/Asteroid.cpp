@@ -1,8 +1,9 @@
 #include "game/Asteroid.hpp"
+#include "rendering/MeshFactory.hpp"
 
 #include <cmath>
 
-const float kScale = 0.3f;
+static const float kScale = 0.3f;
 
 Asteroid::Asteroid(const glm::vec3& pos, const glm::vec3& scale,
                    const glm::vec3& speed, const glm::vec3& rotSpeed) {

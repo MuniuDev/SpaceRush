@@ -1,11 +1,13 @@
 #include "game/Projectile.hpp"
+#include "rendering/MeshFactory.hpp"
 
-const float kScale = 1.0f;
+static const float kProjectileWidth = 0.05f;
+static const float kProjectileLength = 0.1f;
 
 Projectile::Projectile(const glm::vec3& pos, const glm::vec3& speed) {
   m_pos = pos;
   m_speed = speed;
-  m_scale = glm::vec3(kScale * 0.05, kScale * 0.1, kScale * 0.05);
+  m_scale = glm::vec3(kProjectileWidth, kProjectileLength, kProjectileWidth);
   m_meshRot = glm::angleAxis((float)M_PI_2, glm::vec3(1, 0, 0));
 }
 Projectile::~Projectile() { MeshFactory::GetInstance().OnRelease(m_mesh); }

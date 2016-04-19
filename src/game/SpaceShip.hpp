@@ -1,10 +1,9 @@
 #pragma once
 
 #include "Common.hpp"
-#include "INode.hpp"
 #include "Scene.hpp"
 #include "game/PhysicsNode.hpp"
-#include "rendering/MeshFactory.hpp"
+#include "rendering/MeshData.hpp"
 
 class SpaceShip : public PhysicsNode {
  public:
@@ -28,6 +27,7 @@ class SpaceShip : public PhysicsNode {
 
   glm::vec3 m_scale;
   glm::quat m_meshRot;
+  glm::quat m_rollRot;
 
   float m_cooldown;
 };

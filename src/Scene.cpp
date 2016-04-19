@@ -20,13 +20,14 @@ Scene::~Scene() {}
 
 void Scene::Init(std::shared_ptr<Camera> camera) {
   m_camera = camera;
-
   m_camera->SetPos(glm::vec3(0, 0, 20));
-  // m_camera->SetRotate(glm::quat(0, 0, 0, 1));
 }
 
 void Scene::Update(float dt) {
+#ifdef GAME_DEBUG
   m_camera->HandleInput(dt);
+#endif
+
   if (m_spaceShip) {
     m_spaceShip->CheckContacts();
     m_spaceShip->Update(dt);

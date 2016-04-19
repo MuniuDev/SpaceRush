@@ -9,8 +9,8 @@
 #include "rendering/Camera.hpp"
 #include "common/Input.hpp"
 
-static const float MOVE_SPEED = 10.0f;
-static const float ROT_SPEED = 0.008f;
+static const float kMoveSpeed = 10.0f;
+static const float kRotSpeed = 0.008f;
 
 Camera::Camera(float fov, float aspect, float clipNear, float clipFar) {
   Resize(fov, aspect, clipNear, clipFar);
@@ -39,12 +39,12 @@ void Camera::HandleInput(float dt) {
     pos.z = 1;
 
   if (glm::length(pos) > 0.0f) {
-    pos = glm::normalize(pos) * MOVE_SPEED * dt;
+    pos = glm::normalize(pos) * kMoveSpeed * dt;
     Move(pos);
   }
 
   if (g_input.IsLMBPressed()) {
-    glm::vec2 v = g_input.GetMouseDeltaPos() * ROT_SPEED;
+    glm::vec2 v = g_input.GetMouseDeltaPos() * kRotSpeed;
     glm::quat rot = glm::angleAxis(-v.x, glm::vec3(0, 1, 0)) *
                     glm::angleAxis(-v.y, GetRight());
     Rotate(rot);

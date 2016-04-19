@@ -1,9 +1,8 @@
 #pragma once
 
 #include "Common.hpp"
-#include "INode.hpp"
 #include "game/PhysicsNode.hpp"
-#include "rendering/MeshFactory.hpp"
+#include "rendering/MeshData.hpp"
 
 class Projectile : public PhysicsNode {
  public:

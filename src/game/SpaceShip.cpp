@@ -1,16 +1,24 @@
 #include "game/SpaceShip.hpp"
 #include "game/Projectile.hpp"
+#include "rendering/MeshFactory.hpp"
 
 #include <cmath>
 
-const float kMoveSpeed = 0.3f;
-const float kScale = 0.03f;
+static const float kMoveSpeed = 0.3f;
+static const float kScale = 0.03f;
 
-const float kWidth = 32.0f;
-const float kLength = 30.0f;
-const float kHeight = 10.0f;
+static const float kWidth = 32.0f;
+static const float kLength = 30.0f;
+static const float kHeight = 10.0f;
 
-const glm::vec3 kStartPos(0, -6, 0);
+static const float kLerpMult = 0.1f;
+static const float kLerpAngle = M_PI_4;
+
+static const float kCooldownTime = 0.5f;
+static const float kProjectileSpeed = 5.0f;
+static const glm::vec3 kProjectileSpawnOffset(0.f, 1.f, 0.f);
+
+static const glm::vec3 kStartPos(0, -6, 0);
 
 unsigned int SpaceShip::s_hitCount = 0;
 
@@ -46,6 +54,18 @@ void SpaceShip::Update(float dt) {
   if (g_input.GetKeyState(SDL_SCANCODE_SPACE)) {
     Shoot();
   }
+
+  float speed = m_speed.x * kLerpMult;
+  glm::quat dest;
+  if (speed >= 0) {
+    dest = glm::angleAxis(kLerpAngle, glm::vec3(0, 1, 0));
+    speed = glm::clamp(speed, 0.f, 1.f);
+
+  } else {
+    dest = glm::angleAxis(-kLerpAngle, glm::vec3(0, 1, 0));
+    speed = glm::clamp(-speed, 0.f, 1.f);
+  }
+  m_rollRot = glm::lerp(glm::quat(1, 0, 0, 0), dest, speed);
 }
 
 void SpaceShip::Draw() { m_mesh->Draw(); }
@@ -53,16 +73,16 @@ void SpaceShip::Draw() { m_mesh->Draw(); }
 glm::mat4 SpaceShip::GetTransformation() const {
   glm::mat4 scale = glm::scale(glm::mat4(1.0f), m_scale);
   glm::mat4 trans = glm::translate(glm::mat4(1.0f), m_pos);
-  glm::mat4 rot = glm::mat4_cast(m_rot);
-  glm::mat4 rot2 = glm::mat4_cast(m_meshRot);
-  return trans * rot * scale * rot2;
+  glm::mat4 rot = glm::mat4_cast(m_rot * m_rollRot);
+  glm::mat4 meshRot = glm::mat4_cast(m_meshRot);
+  return trans * rot * scale * meshRot;
 }
 
 void SpaceShip::Shoot() {
-  if (m_cooldown > 0.5f) {
+  if (m_cooldown > kCooldownTime) {
     LOGD("Shoot!");
-    auto p = std::make_shared<Projectile>(m_pos + glm::vec3(0, 1, 0),
-                                          glm::vec3(0, 5, 0));
+    auto p = std::make_shared<Projectile>(m_pos + kProjectileSpawnOffset,
+                                          glm::vec3(0, kProjectileSpeed, 0));
     p->Init();
     m_scene->m_projectiles.push_back(p);
     m_cooldown = 0.0f;

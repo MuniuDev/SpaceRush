@@ -12,6 +12,5 @@ class AsteroidEmmiter {
 
  private:
   std::shared_ptr<Scene> m_scene;
-  glm::vec3 m_border[2];
   float m_deltaTime;
 };

@@ -2,6 +2,24 @@
 #include "Common.hpp"
 #include "game/SpaceShip.hpp"
 
+static const float kSpawnHeight = 10.0f;
+static const float kSpawnXOffset = 6.0f;
+
+static const float kMinSize = 0.8f;
+static const float kMaxSize = 2.0f;
+
+static const float kXSpeedRange = 1.0f;
+
+static const float kYSpeedMin = 3.0f;
+static const float kYSpeedMax = 6.0f;
+
+static const float kRotSpeedRange = 1.0f;
+
+static const float kMaxSpawnInterval = 1.0f;
+static const float kMinSpawnInterval = 0.07f;
+static const float kSpawnIntervalMantiss = 1.03f;
+static const float kSpawnIntervalMult = 1.5f;
+
 float RandomFloat(float min, float max) {
   float ret = min;
   float delta = max - min;
@@ -11,21 +29,14 @@ float RandomFloat(float min, float max) {
 
 AsteroidEmmiter::AsteroidEmmiter(std::shared_ptr<Scene> scene)
     : m_scene(scene) {
-  glm::mat4 inv_mvp = glm::inverse(m_scene->GetCamera()->GetMVP());
-  m_border[0] = glm::vec3(inv_mvp * glm::vec4(-1, 1, 0, 1));
-  m_border[1] = glm::vec3(inv_mvp * glm::vec4(1, 1, 0, 1) * inv_mvp);
-  LOGD("{},{},{} {},{},{}", m_border[0].x, m_border[0].y, m_border[0].z,
-       m_border[1].x, m_border[1].y, m_border[1].z);
   m_deltaTime = 0;
 }
 AsteroidEmmiter::~AsteroidEmmiter() {}
 
 float GetInterval() {
-  const float cooef = 1.03f;
-  const float cooef2 = 1.5f;
-  float count = SpaceShip::s_hitCount;
-  float ret = (1.0f / std::pow(cooef, count)) * cooef2;
-  return ret > 1.0f ? 1.0f : (ret < 0.07f ? 0.07f : ret);
+  float ret = (1.0f / std::pow(kSpawnIntervalMantiss, SpaceShip::s_hitCount)) *
+              kSpawnIntervalMult;
+  return glm::clamp(ret, kMinSpawnInterval, kMaxSpawnInterval);
 }
 
 void AsteroidEmmiter::Update(float dt) {
@@ -33,11 +44,15 @@ void AsteroidEmmiter::Update(float dt) {
   float interval = GetInterval();
   if (m_deltaTime >= interval) {
     auto asteroid = std::make_shared<Asteroid>(
-        glm::vec3(RandomFloat(-6, 6), 10, 0),
-        glm::vec3(RandomFloat(0.8, 2), RandomFloat(0.8, 2),
-                  RandomFloat(0.8, 2)),
-        glm::vec3(RandomFloat(-1, 1), RandomFloat(-3, -6), 0),
-        glm::vec3(RandomFloat(-1, 1), RandomFloat(-1, 1), RandomFloat(-1, 1)));
+        glm::vec3(RandomFloat(-kSpawnXOffset, kSpawnXOffset), kSpawnHeight, 0),
+        glm::vec3(RandomFloat(kMinSize, kMaxSize),
+                  RandomFloat(kMinSize, kMaxSize),
+                  RandomFloat(kMinSize, kMaxSize)),
+        glm::vec3(RandomFloat(-kXSpeedRange, kXSpeedRange),
+                  RandomFloat(-kYSpeedMin, -kYSpeedMax), 0),
+        glm::vec3(RandomFloat(-kRotSpeedRange, kRotSpeedRange),
+                  RandomFloat(-kRotSpeedRange, kRotSpeedRange),
+                  RandomFloat(-kRotSpeedRange, kRotSpeedRange)));
     asteroid->Init();
     m_scene->m_asteroids.push_back(asteroid);
     m_deltaTime -= interval;

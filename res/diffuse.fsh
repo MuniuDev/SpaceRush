@@ -41,7 +41,7 @@ uniform sampler2D gSampler;
 // calculates ambient light
 vec4 ambientlLight(BaseLight ambientLight) {
 	if(ambientLight.intensity <= 0.0f) {
-		return vec4(0.0f,0.0f,0.0f,0.0f);
+		return vec4(0.0f,0.0f,0.0f,1.0f);
 	}
 
 	return vec4(ambientLight.color * ambientLight.intensity, 1);
@@ -50,9 +50,9 @@ vec4 ambientlLight(BaseLight ambientLight) {
 // calculates diffuse factor of any light
 vec4 diffuseLight(BaseLight base, vec3 direction, vec3 normal) {
 	if(base.intensity <= 0.0f)
-		return vec4(0.0f,0.0f,0.0f,0.0f);
+		return vec4(0.0f,0.0f,0.0f,1.0f);
 
-	vec4 diffuseColor = vec4(0.0f,0.0f,0.0f,0.0f);
+	vec4 diffuseColor = vec4(0.0f,0.0f,0.0f,1.0f);
 	float diffuseFactor =  dot(normal,-direction);
 
 	if(diffuseFactor > 0.0f ) {
@@ -79,5 +79,4 @@ void main()
 
 	// combine lights for final color
   frag_color = ambient + directional;
-  //frag_color = vec4(0.5,0.5,0.5,1.0);
 }

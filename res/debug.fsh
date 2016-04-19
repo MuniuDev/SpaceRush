@@ -8,8 +8,6 @@
 
 #version 330 core
 
-/* Params */
-
 out vec4 frag_color;
 
 in vec3 v_vertexColor;

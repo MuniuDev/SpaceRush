@@ -16,22 +16,27 @@ GameManager::GameManager(std::shared_ptr<Scene> scene) : m_scene(scene) {}
 GameManager::~GameManager() {}
 
 void GameManager::Init() {
-  m_debugRenderer = std::make_shared<DebugRenderer>(m_scene->GetCamera());
-
   m_emmiter = std::make_shared<AsteroidEmmiter>(m_scene);
 
   auto ship = std::make_shared<SpaceShip>(m_scene);
   ship->Init();
   m_scene->m_spaceShip = ship;
 
+#ifdef GAME_DEBUG
+  m_debugRenderer = std::make_shared<DebugRenderer>(m_scene->GetCamera());
   g_physics.SetDebugRenderer(m_debugRenderer);
+#endif
 }
+
 void GameManager::Reset() {}
+
 void GameManager::Update() {
+#ifdef GAME_DEBUG
   if (g_input.GetKeyState(SDL_SCANCODE_T))
-    m_debugRenderer->setDebugMode(1 | 2);
+    m_debugRenderer->setDebugMode(1 | 2);  // wireframe and aabox
   else if (g_input.GetKeyState(SDL_SCANCODE_G))
-    m_debugRenderer->setDebugMode(0);
+    m_debugRenderer->setDebugMode(0);  // no draw
+#endif
 
   m_emmiter->Update(g_timer.GetDeltaTime());
   g_physics.Update(g_timer.GetDeltaTime());

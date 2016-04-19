@@ -1,9 +1,9 @@
+// Source: http://shaderfrog.com/app/view/273?view=shader
 #version 330 core
 
 out vec4 frag_color;
 
 uniform float u_time;
-
 uniform float u_starRadius;
 uniform vec3 u_starColor;
 uniform float u_starDensity;

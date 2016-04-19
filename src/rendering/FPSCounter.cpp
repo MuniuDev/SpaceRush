@@ -8,7 +8,7 @@
 
 #include "rendering/FPSCounter.hpp"
 
-#define INTERVAL 1.0f
+static const float kInterval = 1.0f;
 
 FPSCounter::FPSCounter() {}
 
@@ -26,9 +26,9 @@ float FPSCounter::GetFPS() { return m_frameSum / m_timeSum; }
 
 void FPSCounter::Print() {
   // update fps every second
-  if (m_timeSum >= INTERVAL) {
+  if (m_timeSum >= kInterval) {
     LOGD("FPS: {}", GetFPS());
-    m_timeSum -= INTERVAL;
+    m_timeSum -= kInterval;
     m_frameSum = 0;
   }
 }
