@@ -23,7 +23,8 @@ void PhysicsNode::InitPhysics(std::unique_ptr<btCollisionShape> shape,
 
   btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(
       mass, m_motionState.get(), m_shape.get(), inertia);
-  m_rigidBody = std::unique_ptr<btRigidBody>(new btRigidBody(rigidBodyCI));
+  m_rigidBody = std::unique_ptr<btRigidBody>(
+      new OwnedRigidBody(shared_from_this(), nodeType, rigidBodyCI));
 
   // set 2D plane contraints
   if (nodeType == PLAYER) {
@@ -85,4 +86,8 @@ void PhysicsNode::Update(float dt) {
   if (m_pos.y < -25 || m_pos.y > 25 || m_pos.x < -25 || m_pos.x > 25) {
     m_destroyRequested = true;
   }
+}
+
+void PhysicsNode::CheckContacts() {
+  g_physics.CheckContacts(m_rigidBody.get());
 }

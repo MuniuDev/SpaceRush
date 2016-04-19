@@ -16,6 +16,7 @@ class PhysicsSimulator {
   void Update(float dt);
   void DebugDraw();
   void SetDebugRenderer(std::shared_ptr<DebugRenderer> renderer);
+  void CheckContacts(btRigidBody* body);
 
  private:
   std::unique_ptr<btBroadphaseInterface> m_broadphase;

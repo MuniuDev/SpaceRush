@@ -22,6 +22,7 @@ class Scene {
 
   void Init(std::shared_ptr<Camera> camera);
   void Update(float dt);
+  void Reset();
 
   std::shared_ptr<Camera> GetCamera();
 

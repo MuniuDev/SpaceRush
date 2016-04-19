@@ -17,6 +17,7 @@ class INode {
   virtual void Draw() = 0;
   virtual glm::mat4 GetTransformation() const = 0;
   virtual bool isDestroyRequested() = 0;
+  virtual void CheckContacts() = 0;
 
   /*virtual void SetPos(const glm::vec3 &pos) = 0;
   virtual void SetRot(const glm::quat &rot) = 0;

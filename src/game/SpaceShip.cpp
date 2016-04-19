@@ -57,8 +57,9 @@ void SpaceShip::Draw() { m_mesh->Draw(); }
 glm::mat4 SpaceShip::GetTransformation() const {
   glm::mat4 scale = glm::scale(glm::mat4(1.0f), m_scale);
   glm::mat4 trans = glm::translate(glm::mat4(1.0f), m_pos);
-  glm::mat4 rot = glm::mat4_cast(m_rot * m_meshRot);
-  return trans * rot * scale;
+  glm::mat4 rot = glm::mat4_cast(m_rot);
+  glm::mat4 rot2 = glm::mat4_cast(m_meshRot);
+  return trans * rot * scale * rot2;
 }
 
 void SpaceShip::Shoot() {
@@ -70,4 +71,9 @@ void SpaceShip::Shoot() {
     m_scene->m_projectiles.push_back(p);
     m_cooldown = 0.0f;
   }
+}
+
+void SpaceShip::Reset() {
+  LOGD("Reset!");
+  m_destroyRequested = false;
 }

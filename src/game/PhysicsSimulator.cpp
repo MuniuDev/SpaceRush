@@ -1,6 +1,67 @@
 #include "game/PhysicsSimulator.hpp"
+#include "game/PhysicsNode.hpp"
 
 PhysicsSimulator g_physics;
+
+struct ContactSensorCallback : public btCollisionWorld::ContactResultCallback {
+  ContactSensorCallback() : btCollisionWorld::ContactResultCallback() {}
+
+  //! If you don't want to consider collisions where the bodies are joined by a
+  //! constraint, override needsCollision:
+  /*! However, if you use a btCollisionObject for #body instead of a
+   * btRigidBody,
+   *  then this is unnecessary—checkCollideWithOverride isn't available */
+  /*virtual bool needsCollision(btBroadphaseProxy* proxy) const {
+    // superclass will check m_collisionFilterGroup and m_collisionFilterMask
+    if (!btCollisionWorld::ContactResultCallback::needsCollision(proxy))
+      return false;
+    // if passed filters, may also want to avoid contacts between constraints
+    return body.checkCollideWithOverride(
+        static_cast<btCollisionObject*>(proxy->m_clientObject));
+  }*/
+
+  //! Called with each contact for your own processing (e.g. test if contacts
+  //! fall in within sensor parameters)
+  virtual btScalar addSingleResult(btManifoldPoint& cp,
+                                   const btCollisionObjectWrapper* colObj0,
+                                   int partId0, int index0,
+                                   const btCollisionObjectWrapper* colObj1,
+                                   int partId1, int index1) {
+    const OwnedRigidBody* r0 =
+        static_cast<const OwnedRigidBody*>(colObj0->m_collisionObject);
+    const OwnedRigidBody* r1 =
+        static_cast<const OwnedRigidBody*>(colObj1->m_collisionObject);
+
+    if (r0->GetType() == ASTEROID && r1->GetType() == ASTEROID) return 0;
+    if (r0->GetType() == PLAYER && r1->GetType() == ASTEROID ||
+        r1->GetType() == PLAYER && r0->GetType() == ASTEROID) {
+      // Player asteroid contact
+      if (r1->GetType() == PLAYER) std::swap(r0, r1);  // make sure player is r0
+      auto node = r0->GetOwner();
+      if (node) {
+        node->Destroy();
+      }
+    }
+    if (r0->GetType() == PROJECTILE && r1->GetType() == ASTEROID ||
+        r1->GetType() == PROJECTILE && r0->GetType() == ASTEROID) {
+      // Projectile asteroid contact
+      if (r1->GetType() == PROJECTILE)
+        std::swap(r0, r1);  // make sure projectile is r0
+      auto node0 = r0->GetOwner();
+      auto node1 = r1->GetOwner();
+      if (node0) {
+        node0->Destroy();
+      }
+      if (node1) {
+        node1->Destroy();
+      }
+    }
+
+    // do stuff with the collision point
+    return 0;  // There was a planned purpose for the return value of
+               // addSingleResult, but it is not used so you can ignore it.
+  }
+};
 
 PhysicsSimulator::PhysicsSimulator()
     : m_broadphase(new btDbvtBroadphase),
@@ -38,6 +99,11 @@ void PhysicsSimulator::AddConstraint(btTypedConstraint* constraint) {
 
 void PhysicsSimulator::RemoveConstraint(btTypedConstraint* constraint) {
   m_dynamicsWorld->removeConstraint(constraint);
+}
+
+void PhysicsSimulator::CheckContacts(btRigidBody* body) {
+  static ContactSensorCallback callback;
+  m_dynamicsWorld->contactTest(body, callback);
 }
 
 void PhysicsSimulator::SetDebugRenderer(

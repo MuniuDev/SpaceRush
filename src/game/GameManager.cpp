@@ -34,6 +34,10 @@ void GameManager::Update() {
     m_debugRenderer->setDebugMode(0);
 
   m_emmiter->Update(g_timer.GetDeltaTime());
-  m_scene->Update(g_timer.GetDeltaTime());
   g_physics.Update(g_timer.GetDeltaTime());
+  m_scene->Update(g_timer.GetDeltaTime());
+
+  if (m_scene->m_spaceShip->isDestroyRequested()) {
+    m_scene->Reset();
+  }
 }

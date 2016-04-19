@@ -14,6 +14,7 @@ class SpaceShip : public PhysicsNode {
   void Init() override;
   void Update(float dt) override;
   void Draw() override;
+  void Reset();
   glm::mat4 GetTransformation() const override;
 
  private:

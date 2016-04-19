@@ -7,6 +7,7 @@
 */
 
 #include "Scene.hpp"
+#include "game/SpaceShip.hpp"
 
 Scene::Scene() : m_camera(nullptr) {
   // basic scene lights
@@ -26,7 +27,19 @@ void Scene::Init(std::shared_ptr<Camera> camera) {
 
 void Scene::Update(float dt) {
   m_camera->HandleInput(dt);
-  if (m_spaceShip) m_spaceShip->Update(dt);
+  if (m_spaceShip) {
+    m_spaceShip->CheckContacts();
+    m_spaceShip->Update(dt);
+  }
+
+  for (int i = 0; i < m_projectiles.size(); ++i) {
+    m_projectiles[i]->CheckContacts();
+    if (m_projectiles[i]->isDestroyRequested()) {
+      m_projectiles.erase(m_projectiles.begin() + i);
+      --i;
+    } else
+      m_projectiles[i]->Update(dt);
+  }
 
   for (int i = 0; i < m_asteroids.size(); ++i) {
     if (m_asteroids[i]->isDestroyRequested()) {
@@ -35,14 +48,12 @@ void Scene::Update(float dt) {
     } else
       m_asteroids[i]->Update(dt);
   }
+}
 
-  for (int i = 0; i < m_projectiles.size(); ++i) {
-    if (m_projectiles[i]->isDestroyRequested()) {
-      m_projectiles.erase(m_projectiles.begin() + i);
-      --i;
-    } else
-      m_projectiles[i]->Update(dt);
-  }
+void Scene::Reset() {
+  std::static_pointer_cast<SpaceShip>(m_spaceShip)->Reset();
+  m_projectiles.clear();
+  m_asteroids.clear();
 }
 
 std::shared_ptr<Camera> Scene::GetCamera() { return m_camera; }
