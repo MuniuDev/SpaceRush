@@ -67,6 +67,13 @@ if( SDL2_FOUND )
   set( LIBRARIES ${LIBRARIES} ${SDL2_LIBRARY} )
 endif( SDL2_FOUND )
 
+# Find SDL2 TTF
+find_package(SDL2TTF REQUIRED)
+if( SDL2TTF_FOUND )
+  include_directories( ${SDL2TTF_INCLUDE_DIR} )
+  set( LIBRARIES ${LIBRARIES} ${SDL2TTF_LIBRARY} )
+endif( SDL2TTF_FOUND )
+
 # Find GLEW
 set(GLEW_USE_STATIC_BUILDS ON)
 find_package(GLEW REQUIRED)

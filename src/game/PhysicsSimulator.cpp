@@ -27,13 +27,15 @@ struct ContactSensorCallback : public btCollisionWorld::ContactResultCallback {
       // Projectile-asteroid contact
       auto node0 = r0->GetOwner();
       auto node1 = r1->GetOwner();
+      if (node0 && !node0->isDestroyRequested() && node1 &&
+          !node1->isDestroyRequested())
+        SpaceShip::s_hitCount += 1;
       if (node0) {
         node0->Destroy();
       }
       if (node1) {
         node1->Destroy();
       }
-      SpaceShip::s_hitCount += 1;
     }
     return 0;
   }

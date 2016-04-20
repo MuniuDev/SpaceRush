@@ -8,7 +8,11 @@
 
 #include "rendering/Renderer.hpp"
 #include "game/PhysicsSimulator.hpp"
+#include "game/SpaceShip.hpp"
 #include "rendering/Quad.hpp"
+#include "rendering/TextRenderer.hpp"
+
+static TextRenderer s_textRenderer;
 
 Renderer::Renderer() {
   LOGD("Created renderer");
@@ -70,6 +74,8 @@ void Renderer::InitRenderer(std::shared_ptr<Scene> scene, float, float) {
 
   m_projectileShader->BindProgram();
   m_projectileShader->SetUniform("u_color", glm::vec3(0, 1, 0));
+
+  s_textRenderer.InitRenderer(32);
 }
 
 void Renderer::RenderScene() {
@@ -106,6 +112,15 @@ void Renderer::RenderScene() {
     m_projectileShader->SetUniform("u_transform", node->GetTransformation());
     node->Draw();
   }
+
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  std::stringstream ss;
+  ss << "Score: ";
+  ss << SpaceShip::s_hitCount;
+  s_textRenderer.RenderText(glm::vec3(0, -0.9, 0), 0.08f, glm::vec3(1, 1, 1),
+                            ss.str());
+  glDisable(GL_BLEND);
 
 #ifdef GAME_DEBUG
   g_physics.DebugDraw();

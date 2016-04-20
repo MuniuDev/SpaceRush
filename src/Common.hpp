@@ -14,6 +14,7 @@
 #define GLEW_STATIC  // Link GLEW in static mode
 #include <GL/glew.h>
 #include <SDL_opengl.h>
+#include <SDL_ttf.h>
 
 #ifdef __APPLE__  // OSX
 #include <OpenGL/gl.h>

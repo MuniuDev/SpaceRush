@@ -40,9 +40,14 @@ Context::Context(float width, float height, std::string name)
   m_context = SDL_GL_CreateContext(m_window);
   if (m_context == nullptr) {
     LOGE("OpenGL context could not be created! SDL Error: {}", SDL_GetError());
-    std::exit(-1);
   }
   CHECK_GL_ERR();
+
+  // Initialize SDL_ttf
+  if (TTF_Init() == -1) {
+    LOGE("SDL_ttf could not initialize! SDL_ttf Error: {}", TTF_GetError());
+    std::exit(-1);
+  }
 
   // Initialize GLEW
   glewExperimental = GL_TRUE;
