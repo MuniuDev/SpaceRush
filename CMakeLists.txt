@@ -52,6 +52,9 @@ if( WIN32 )
   set( ASSIMP_ROOT_DIR "${WIN_LIB_DIR}/assimp")
   set( SOIL_ROOT_DIR "${WIN_LIB_DIR}/soil")
   set( BULLET_ROOT  "${WIN_LIB_DIR}/bullet")
+  set( ENV{SDL2TTFDIR}  "${WIN_LIB_DIR}/SDL2_ttf")
+  SET( ENV{FREETYPE_DIR} "${WIN_LIB_DIR}/Freetype" )
+  SET( FREETYPE_BIN "${WIN_LIB_DIR}/Freetype/bin" )
   # libraries needed when linking SDL2 statically
   set( LIBRARIES "version.lib;imm32.lib;winmm.lib;")
 endif( WIN32 )
@@ -117,6 +120,15 @@ if( BULLET_FOUND )
   include_directories( ${BULLET_INCLUDE_DIRS} )
 endif( BULLET_FOUND )
 
+if( WIN32 )
+  # Find bullet
+  find_package( FREETYPE REQUIRED )
+  if( FREETYPE_FOUND )
+    set( LIBRARIES ${LIBRARIES} ${FREETYPE_LIBRARIES} )
+    include_directories( ${FREETYPE_INCLUDE_DIRS} )
+  endif( FREETYPE_FOUND )
+endif( WIN32 )
+
 ##########################################
 ## Add Executable
 ##########################################
@@ -125,6 +137,11 @@ if( WIN32 )
   add_custom_target(copy-resource-files ALL
     COMMAND cmake -E copy_directory ${CMAKE_SOURCE_DIR}/res ${CMAKE_BINARY_DIR}/Release/res
 	COMMAND cmake -E copy_directory ${CMAKE_SOURCE_DIR}/res ${CMAKE_BINARY_DIR}/Debug/res
+    DEPENDS ${TARGET_NAME})
+
+  add_custom_target(copy-dll-files ALL
+    COMMAND cmake -E copy ${FREETYPE_BIN}/freetype6.dll ${CMAKE_BINARY_DIR}/Release/
+	  COMMAND cmake -E copy ${FREETYPE_BIN}/zlib1.dll ${CMAKE_BINARY_DIR}/Release/
     DEPENDS ${TARGET_NAME})
 else( WIN32 )
   add_custom_target(copy-resource-files ALL

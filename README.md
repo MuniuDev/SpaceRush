@@ -10,6 +10,8 @@ A simple 3D space scrolling game where you need to evade the asteroids.
 - clang 3.3+ or MSVS 2015
 - OpenGL 3.3+
 - SDL2
+- SDL2_ttf
+- Freetype2
 - Assimp
 - Simple OpenGL Image Library
 - GLM
