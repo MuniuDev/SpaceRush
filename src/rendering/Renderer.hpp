@@ -11,6 +11,7 @@
 #include "Common.hpp"
 #include "Scene.hpp"
 #include "rendering/ShaderProgram.hpp"
+#include "rendering/TextRenderer.hpp"
 
 class Renderer {
  public:
@@ -26,4 +27,5 @@ class Renderer {
   std::shared_ptr<ShaderProgram> m_shader;
   std::shared_ptr<ShaderProgram> m_starShader;
   std::shared_ptr<ShaderProgram> m_projectileShader;
+  TextRenderer m_textRenderer;
 };

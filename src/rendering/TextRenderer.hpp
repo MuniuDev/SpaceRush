@@ -14,6 +14,5 @@ class TextRenderer {
 
  protected:
   std::shared_ptr<ShaderProgram> m_shader;
-
   TTF_Font* m_font;
 };
