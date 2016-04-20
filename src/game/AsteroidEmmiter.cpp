@@ -17,8 +17,8 @@ static const float kRotSpeedRange = 1.6f;
 
 static const float kMaxSpawnInterval = 1.0f;
 static const float kMinSpawnInterval = 0.07f;
-static const float kSpawnIntervalMantiss = 1.03f;
-static const float kSpawnIntervalMult = 1.1f;
+static const float kSpawnIntervalMantiss = 1.05f;
+static const float kSpawnIntervalMult = 0.8f;
 
 float RandomFloat(float min, float max) {
   float ret = min;

@@ -8,6 +8,8 @@
 
 #pragma once
 
+//#define GAME_DEBUG
+
 #include <SDL.h>
 #undef main
 
